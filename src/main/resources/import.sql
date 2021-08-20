@@ -1,0 +1,8 @@
+insert into class values (1, '1A')
+insert into class values (2, '2A')
+insert into class values (3, '1B')
+insert into student values (1, 22, 'Edoardo', 'Lori', 1)
+insert into student values (2, 25, 'Luana', 'Marchesi', 1)
+insert into student values (3, 27, 'Marcello', 'Beneventi', 2)
+insert into student values (4, 21, 'Maria', 'Cocci', 2)
+insert into student values (5, 28, 'Eva', 'Pisano', 3)
