@@ -7,6 +7,7 @@ import javax.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,6 +29,7 @@ public class StudentController {
 	private StudentService studentService;
 	
 	@GetMapping
+	@Secured("ROLE_USER")
 	public ResponseEntity<List<StudentDto>> getListStudent() {
 		List<StudentDto> studentList = null;
 		try {
@@ -58,6 +60,7 @@ public class StudentController {
 	 */
 	
 	@GetMapping("/{id}")
+	@Secured("ROLE_USER")
 	public ResponseEntity<StudentDto> getStudent(@PathVariable("id") long id) {
 		StudentDto studentDto = null;
 		try {
@@ -72,6 +75,7 @@ public class StudentController {
 	}
 	
 	@PostMapping
+	@Secured("ROLE_ADMIN")
 	public ResponseEntity<Object> addStudent(@RequestBody StudentDto studentDto) {
 		try {
 			studentService.addStudent(studentDto);
@@ -82,6 +86,7 @@ public class StudentController {
 	}
 	
 	@DeleteMapping("/{id}")
+	@Secured("ROLE_ADMIN")
 	public ResponseEntity<Object> deleteStudent(@PathVariable("id") long id) {
 		try {
 			studentService.deleteStudent(id);
@@ -92,6 +97,7 @@ public class StudentController {
 	}
 	
 	@PutMapping
+	@Secured("ROLE_ADMIN")
 	public ResponseEntity<Object> updateStudent(@RequestBody StudentDto studentDto) {
 		try {
 			studentService.updateStudent(studentDto);
