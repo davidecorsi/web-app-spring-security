@@ -7,7 +7,6 @@ import javax.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -31,7 +30,6 @@ public class StudentController {
 	private StudentService studentService;
 	
 	@GetMapping
-	@Secured("ROLE_USER")
 	public ResponseEntity<List<StudentDto>> getListStudent(Authentication authentication) {
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 		List<StudentDto> studentList = null;
@@ -63,7 +61,6 @@ public class StudentController {
 	 */
 	
 	@GetMapping("/{id}")
-	@Secured("ROLE_USER")
 	public ResponseEntity<StudentDto> getStudent(Authentication authentication, @PathVariable("id") long id) {
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 		StudentDto studentDto = null;
@@ -79,7 +76,6 @@ public class StudentController {
 	}
 	
 	@PostMapping
-	@Secured("ROLE_ADMIN")
 	public ResponseEntity<Object> addStudent(Authentication authentication, @RequestBody StudentDto studentDto) {
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 		try {
@@ -91,7 +87,6 @@ public class StudentController {
 	}
 	
 	@DeleteMapping("/{id}")
-	@Secured("ROLE_ADMIN")
 	public ResponseEntity<Object> deleteStudent(Authentication authentication, @PathVariable("id") long id) {
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 		try {
@@ -103,7 +98,6 @@ public class StudentController {
 	}
 	
 	@PutMapping
-	@Secured("ROLE_ADMIN")
 	public ResponseEntity<Object> updateStudent(Authentication authentication, @RequestBody StudentDto studentDto) {
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 		try {
