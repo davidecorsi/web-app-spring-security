@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,7 +32,8 @@ public class StudentController {
 	
 	@GetMapping
 	@Secured("ROLE_USER")
-	public ResponseEntity<List<StudentDto>> getListStudent() {
+	public ResponseEntity<List<StudentDto>> getListStudent(Authentication authentication) {
+		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 		List<StudentDto> studentList = null;
 		try {
 			studentList = studentService.getListStudent();
@@ -61,7 +64,8 @@ public class StudentController {
 	
 	@GetMapping("/{id}")
 	@Secured("ROLE_USER")
-	public ResponseEntity<StudentDto> getStudent(@PathVariable("id") long id) {
+	public ResponseEntity<StudentDto> getStudent(Authentication authentication, @PathVariable("id") long id) {
+		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 		StudentDto studentDto = null;
 		try {
 			studentDto = studentService.getStudent(id);
@@ -76,7 +80,8 @@ public class StudentController {
 	
 	@PostMapping
 	@Secured("ROLE_ADMIN")
-	public ResponseEntity<Object> addStudent(@RequestBody StudentDto studentDto) {
+	public ResponseEntity<Object> addStudent(Authentication authentication, @RequestBody StudentDto studentDto) {
+		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 		try {
 			studentService.addStudent(studentDto);
 		} catch(Exception e) {
@@ -87,7 +92,8 @@ public class StudentController {
 	
 	@DeleteMapping("/{id}")
 	@Secured("ROLE_ADMIN")
-	public ResponseEntity<Object> deleteStudent(@PathVariable("id") long id) {
+	public ResponseEntity<Object> deleteStudent(Authentication authentication, @PathVariable("id") long id) {
+		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 		try {
 			studentService.deleteStudent(id);
 		} catch(Exception e) {
@@ -98,7 +104,8 @@ public class StudentController {
 	
 	@PutMapping
 	@Secured("ROLE_ADMIN")
-	public ResponseEntity<Object> updateStudent(@RequestBody StudentDto studentDto) {
+	public ResponseEntity<Object> updateStudent(Authentication authentication, @RequestBody StudentDto studentDto) {
+		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 		try {
 			studentService.updateStudent(studentDto);
 		} catch(EntityNotFoundException e) {
