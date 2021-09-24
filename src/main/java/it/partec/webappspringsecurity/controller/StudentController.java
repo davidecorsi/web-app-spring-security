@@ -2,8 +2,6 @@ package it.partec.webappspringsecurity.controller;
 
 import java.util.List;
 
-import javax.persistence.EntityNotFoundException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,14 +28,10 @@ public class StudentController {
 	private StudentService studentService;
 	
 	@GetMapping
-	public ResponseEntity<List<StudentDto>> getListStudent(Authentication authentication) {
+	public ResponseEntity<List<StudentDto>> getListStudent(Authentication authentication) throws Exception {
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 		List<StudentDto> studentList = null;
-		try {
-			studentList = studentService.getListStudent();
-		} catch(Exception e) {
-			return new ResponseEntity<List<StudentDto>>(HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+		studentList = studentService.getListStudent();
 		return new ResponseEntity<List<StudentDto>>(studentList, HttpStatus.OK);
 	}
 	
@@ -61,52 +55,31 @@ public class StudentController {
 	 */
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<StudentDto> getStudent(Authentication authentication, @PathVariable("id") long id) {
+	public ResponseEntity<StudentDto> getStudent(Authentication authentication, @PathVariable("id") long id) throws Exception {
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 		StudentDto studentDto = null;
-		try {
-			studentDto = studentService.getStudent(id);
-		} catch(Exception e) {
-			return new ResponseEntity<StudentDto>(HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-		if(studentDto != null) {
-			return new ResponseEntity<StudentDto>(studentDto, HttpStatus.OK);
-		}
-		return new ResponseEntity<StudentDto>(HttpStatus.NOT_FOUND);
+		studentDto = studentService.getStudent(id);
+		return new ResponseEntity<StudentDto>(studentDto, HttpStatus.OK);
 	}
 	
 	@PostMapping
-	public ResponseEntity<Object> addStudent(Authentication authentication, @RequestBody StudentDto studentDto) {
+	public ResponseEntity<Object> addStudent(Authentication authentication, @RequestBody StudentDto studentDto) throws Exception {
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-		try {
-			studentService.addStudent(studentDto);
-		} catch(Exception e) {
-			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+		studentService.addStudent(studentDto);
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Object> deleteStudent(Authentication authentication, @PathVariable("id") long id) {
+	public ResponseEntity<Object> deleteStudent(Authentication authentication, @PathVariable("id") long id) throws Exception {
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-		try {
-			studentService.deleteStudent(id);
-		} catch(Exception e) {
-			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+		studentService.deleteStudent(id);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
 	@PutMapping
-	public ResponseEntity<Object> updateStudent(Authentication authentication, @RequestBody StudentDto studentDto) {
+	public ResponseEntity<Object> updateStudent(Authentication authentication, @PathVariable("id") long id, @RequestBody StudentDto studentDto) throws Exception {
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-		try {
-			studentService.updateStudent(studentDto);
-		} catch(EntityNotFoundException e) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		} catch(Exception e) {
-			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+		studentService.updateStudent(id, studentDto);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 }
