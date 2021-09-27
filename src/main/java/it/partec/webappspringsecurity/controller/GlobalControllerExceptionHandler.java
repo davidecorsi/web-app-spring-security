@@ -6,6 +6,7 @@ import javax.servlet.ServletException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageConversionException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -66,6 +67,12 @@ public class GlobalControllerExceptionHandler {
 	@ResponseStatus(HttpStatus.NOT_FOUND)
 	public Errore entityNotFoundException(Exception e) {
 		return new Errore("404", "NOT FOUND");
+	}
+	
+	@ExceptionHandler(value = AccessDeniedException.class)
+	@ResponseStatus(HttpStatus.FORBIDDEN)
+	public Errore accessDeniedException(Exception e) {
+		return new Errore("403", "FORBIDDEN");
 	}
 	
 	@ExceptionHandler(value = { Exception.class })
