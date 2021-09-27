@@ -72,6 +72,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		.authenticated()
 		.and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		http.addFilterBefore(authenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class);
-        http.headers().cacheControl();
 	}
 }
